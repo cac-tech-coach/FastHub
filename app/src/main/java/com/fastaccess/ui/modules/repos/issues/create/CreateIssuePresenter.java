@@ -101,7 +101,8 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
         IssueRequestModel requestModel = IssueRequestModel.clone(createIssueParam.getPullRequestModel(), false);
         makeRestCall(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(createIssueParam.getIssueInfo().getLogin(), createIssueParam.getIssueInfo().getRepo(), number, requestModel)
                 .flatMap(pullRequest1 -> RestProvider.getIssueService(isEnterprise()).getIssue(createIssueParam.getIssueInfo().getLogin(), createIssueParam.getIssueInfo().getRepo(), number),
-                        (pullRequest1, issueReaction) -> {//hack to get reactions from issue api
+                        //hack to get reactions from issue api
+                        (pullRequest1, issueReaction) -> {
                             if (issueReaction != null) {
                                 pullRequest1.setReactions(issueReaction.getReactions());
                             }
