@@ -45,8 +45,7 @@ public interface CreateIssueMvp {
 
         void onActivityForResult(int resultCode, int requestCode, Intent intent);
 
-        void onSubmit(@NonNull String title, @NonNull CharSequence description, @NonNull String login,
-                      @NonNull String repo, @Nullable Issue issueModel, @Nullable PullRequest pullRequestModel,
+        void onSubmit(IssueInfo issueInfo, @Nullable Issue issueModel, @Nullable PullRequest pullRequestModel,
                       @Nullable ArrayList<LabelModel> labels, @Nullable MilestoneModel milestoneModel,
                       @Nullable ArrayList<User> users);
 

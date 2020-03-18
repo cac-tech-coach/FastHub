@@ -56,21 +56,19 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
             }
         }
     }
-
-    @Override public void onSubmit(@NonNull String title, @NonNull CharSequence description, @NonNull String login,
-                                   @NonNull String repo, @Nullable Issue issue, @Nullable PullRequest pullRequestModel,
+    @Override public void onSubmit(IssueInfo issueInfo, @Nullable Issue issue, @Nullable PullRequest pullRequestModel,
                                    @Nullable ArrayList<LabelModel> labels, @Nullable MilestoneModel milestoneModel,
                                    @Nullable ArrayList<User> users) {
 
-        boolean isEmptyTitle = InputHelper.isEmpty(title);
+        boolean isEmptyTitle = InputHelper.isEmpty(issueInfo.getTitle());
         if (getView() != null) {
             getView().onTitleError(isEmptyTitle);
         }
         if (!isEmptyTitle) {
             if (issue == null && pullRequestModel == null) {
                 CreateIssueModel createIssue = new CreateIssueModel();
-                createIssue.setBody(InputHelper.toString(description));
-                createIssue.setTitle(title);
+                createIssue.setBody(InputHelper.toString(issueInfo.getDescription()));
+                createIssue.setTitle(issueInfo.getTitle());
                 if (isCollaborator) {
                     if (labels != null && !labels.isEmpty()) {
                         createIssue.setLabels(Stream.of(labels).map(LabelModel::getName).collect(Collectors.toCollection(ArrayList::new)));
@@ -82,7 +80,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                         createIssue.setMilestone((long) milestoneModel.getNumber());
                     }
                 }
-                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssue(login, repo, createIssue),
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssue(issueInfo.getLogin(), issueInfo.getRepo(), createIssue),
                         issueModel -> {
                             if (issueModel != null) {
                                 sendToView(view -> view.onSuccessSubmission(issueModel));
@@ -92,8 +90,8 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                         }, false);
             } else {
                 if (issue != null) {
-                    issue.setBody(InputHelper.toString(description));
-                    issue.setTitle(title);
+                    issue.setBody(InputHelper.toString(issueInfo.getDescription()));
+                    issue.setTitle(issueInfo.getTitle());
                     int number = issue.getNumber();
                     if (isCollaborator) {
                         if (labels != null) {
@@ -111,7 +109,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                         }
                     }
                     IssueRequestModel requestModel = IssueRequestModel.clone(issue, false);
-                    makeRestCall(RestProvider.getIssueService(isEnterprise()).editIssue(login, repo, number, requestModel),
+                    makeRestCall(RestProvider.getIssueService(isEnterprise()).editIssue(issueInfo.getLogin(), issueInfo.getRepo(), number, requestModel),
                             issueModel -> {
                                 if (issueModel != null) {
                                     sendToView(view -> view.onSuccessSubmission(issueModel));
@@ -122,8 +120,8 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                 }
                 if (pullRequestModel != null) {
                     int number = pullRequestModel.getNumber();
-                    pullRequestModel.setBody(InputHelper.toString(description));
-                    pullRequestModel.setTitle(title);
+                    pullRequestModel.setBody(InputHelper.toString(issueInfo.getDescription()));
+                    pullRequestModel.setTitle(issueInfo.getTitle());
                     if (isCollaborator) {
                         if (labels != null) {
                             LabelListModel labelModels = new LabelListModel();
@@ -140,8 +138,8 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                         }
                     }
                     IssueRequestModel requestModel = IssueRequestModel.clone(pullRequestModel, false);
-                    makeRestCall(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(login, repo, number, requestModel)
-                            .flatMap(pullRequest1 -> RestProvider.getIssueService(isEnterprise()).getIssue(login, repo, number),
+                    makeRestCall(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(issueInfo.getLogin(), issueInfo.getRepo(), number, requestModel)
+                            .flatMap(pullRequest1 -> RestProvider.getIssueService(isEnterprise()).getIssue(issueInfo.getLogin(), issueInfo.getRepo(), number),
                                     (pullRequest1, issueReaction) -> {//hack to get reactions from issue api
                                         if (issueReaction != null) {
                                             pullRequest1.setReactions(issueReaction.getReactions());
