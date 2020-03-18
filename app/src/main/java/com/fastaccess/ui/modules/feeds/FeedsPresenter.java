@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -67,6 +69,18 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         setCurrentPage(page);
         Login login = Login.getUser();
         if (login == null) return false;// I can't understand how this could possibly be reached lol.
+        Observable<Pageable<Event>> observable = buildFeedPageableObservable(page, login);
+        makeRestCall(observable, response -> {
+            lastPage = response.getLast();
+            if (getCurrentPage() == 1) {
+                manageDisposable(Event.save(response.getItems(), user));
+            }
+            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
+        });
+        return true;
+    }
+
+    private Observable<Pageable<Event>> buildFeedPageableObservable(int page, @NonNull Login login) {
         Observable<Pageable<Event>> observable;
         Logger.e(isOrg);
         if (user != null) {
@@ -79,14 +93,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         } else {
             observable = RestProvider.getUserService(PrefGetter.isEnterprise()).getReceivedEvents(login.getLogin(), page);
         }
-        makeRestCall(observable, response -> {
-            lastPage = response.getLast();
-            if (getCurrentPage() == 1) {
-                manageDisposable(Event.save(response.getItems(), user));
-            }
-            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
-        });
-        return true;
+        return observable;
     }
 
     @Override public int getCurrentPage() {
