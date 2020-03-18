@@ -69,13 +69,13 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
         }
         if (createIssueParam.getIssueModel() == null && createIssueParam.getPullRequestModel() == null) {
             createRequest(createIssueParam);
-        } else {
-            if (createIssueParam.getIssueModel() != null) {
-                createRequestByIssue(createIssueParam);
-            }
-            if (createIssueParam.getPullRequestModel() != null) {
-                createRequestByPullRequest(createIssueParam);
-            }
+            return;
+        }
+        if (createIssueParam.getIssueModel() != null) {
+            createRequestByIssue(createIssueParam);
+        }
+        if (createIssueParam.getPullRequestModel() != null) {
+            createRequestByPullRequest(createIssueParam);
         }
     }
 
