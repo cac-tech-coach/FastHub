@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import android.view.View;
 
@@ -90,10 +91,6 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
             return RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
         }
         return RestProvider.getUserService(isEnterpriseUser(PrefGetter.isEnterprise(), login.getLogin())).getUserEvents(user, page);
-    }
-    
-    private boolean isEnterpriseUser(boolean savedEnterprise, @NotNull String loginUser) {
-        return loginUser.equalsIgnoreCase(user) ? savedEnterprise : isEnterprise();
     }
 
     @Override public int getCurrentPage() {
@@ -203,5 +200,15 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                 RepoPagerActivity.startRepoPager(v.getContext(), parser);
             }
         }
+    }
+
+    @VisibleForTesting
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    @VisibleForTesting()
+    public boolean isEnterpriseUser(boolean savedEnterprise, @NotNull String loginUser) {
+        return loginUser.equalsIgnoreCase(user) ? savedEnterprise : isEnterprise();
     }
 }
