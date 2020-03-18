@@ -84,14 +84,12 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         Logger.e(isOrg);
         if (user == null) {
             return RestProvider.getUserService(PrefGetter.isEnterprise()).getReceivedEvents(login.getLogin(), page);
-        } else {
-            if (isOrg) {
-                return RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
-            } else {
-                return RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
-                                                                 ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
-            }
         }
+        if (isOrg) {
+            return RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
+        }
+        return RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
+                                                         ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
     }
 
     @Override public int getCurrentPage() {
