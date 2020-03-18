@@ -81,19 +81,17 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
     }
 
     private Observable<Pageable<Event>> buildFeedPageableObservable(int page, @NonNull Login login) {
-        Observable<Pageable<Event>> observable;
         Logger.e(isOrg);
         if (user != null) {
             if (isOrg) {
-                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
+                return RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
             } else {
-                observable = RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
-                                                         ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
+                return RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
+                                                                 ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
             }
         } else {
-            observable = RestProvider.getUserService(PrefGetter.isEnterprise()).getReceivedEvents(login.getLogin(), page);
+            return RestProvider.getUserService(PrefGetter.isEnterprise()).getReceivedEvents(login.getLogin(), page);
         }
-        return observable;
     }
 
     @Override public int getCurrentPage() {
