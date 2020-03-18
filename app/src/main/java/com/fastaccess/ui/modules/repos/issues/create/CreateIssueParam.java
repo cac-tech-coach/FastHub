@@ -63,4 +63,12 @@ public class CreateIssueParam {
     public ArrayList<User> getUsers() {
         return users;
     }
+
+    public void setIssueModel(@Nullable Issue issueModel) {
+        this.issueModel = issueModel;
+    }
+
+    public void setPullRequestModel(@Nullable PullRequest pullRequestModel) {
+        this.pullRequestModel = pullRequestModel;
+    }
 }

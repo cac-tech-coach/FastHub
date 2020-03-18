@@ -27,6 +27,10 @@ public class IssueInfo {
         return title;
     }
 
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
     public CharSequence getDescription() {
         return description;
     }

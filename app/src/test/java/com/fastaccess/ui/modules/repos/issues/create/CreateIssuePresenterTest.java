@@ -1,6 +1,9 @@
 package com.fastaccess.ui.modules.repos.issues.create;
 
 
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +26,6 @@ import static org.mockito.Mockito.when;
 @Config(sdk = 28)
 public class CreateIssuePresenterTest {
 
-
     private CreateIssuePresenter createIssuePresenter;
     private CreateIssueMvp.View mockCreateIssueView;
 
@@ -44,7 +46,7 @@ public class CreateIssuePresenterTest {
     }
 
     @Test
-    public void should_return_when_issue_title_is_empty_and_view_no_Empty() {
+    public void should_return_when_onSubmit_issue_title_is_empty_and_view_no_empty() {
         CreateIssueParam createIssueParam = new CreateIssueParam();
         createIssueParam.setIssueInfo(new IssueInfo());
         createIssuePresenter.onSubmit(createIssueParam);
@@ -55,7 +57,7 @@ public class CreateIssuePresenterTest {
     }
 
     @Test
-    public void should_return_when_issue_title_is_empty_and_view_is_Empty() {
+    public void should_return_when_onSubmit_issue_title_is_empty_and_view_is_empty() {
         CreateIssueParam createIssueParam = new CreateIssueParam();
         createIssueParam.setIssueInfo(new IssueInfo());
         when(createIssuePresenter.getView()).thenReturn(null);
@@ -65,4 +67,31 @@ public class CreateIssuePresenterTest {
         verify(createIssuePresenter, never()).createRequestByPullRequest(any());
     }
 
+    @Test
+    public void should_return_when_onSubmit_issue_and_pull_request_is_null() {
+        CreateIssueParam createIssueParam = new CreateIssueParam();
+        IssueInfo issueInfo = new IssueInfo();
+        issueInfo.setTitle("hello world!");
+        createIssueParam.setIssueInfo(issueInfo);
+        createIssuePresenter.onSubmit(createIssueParam);
+        verify(mockCreateIssueView, times(1)).onTitleError(false);
+        verify(createIssuePresenter, times(1)).createRequest(any());
+        verify(createIssuePresenter, never()).createRequestByIssue(any());
+        verify(createIssuePresenter, never()).createRequestByPullRequest(any());
+    }
+
+    @Test
+    public void should_return_when_onSubmit_issue_and_pull_request_is_not_null() {
+        CreateIssueParam createIssueParam = new CreateIssueParam();
+        IssueInfo issueInfo = new IssueInfo();
+        issueInfo.setTitle("hello world!");
+        createIssueParam.setIssueInfo(issueInfo);
+        createIssueParam.setIssueModel(new Issue());
+        createIssueParam.setPullRequestModel(new PullRequest());
+        createIssuePresenter.onSubmit(createIssueParam);
+        verify(mockCreateIssueView, times(1)).onTitleError(false);
+        verify(createIssuePresenter, never()).createRequest(any());
+        verify(createIssuePresenter, times(1)).createRequestByIssue(any());
+        verify(createIssuePresenter, times(1)).createRequestByPullRequest(any());
+    }
 }
