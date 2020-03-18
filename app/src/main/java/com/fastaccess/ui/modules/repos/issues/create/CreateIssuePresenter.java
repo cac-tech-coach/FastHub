@@ -79,7 +79,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
         }
     }
 
-    private void createRequestByPullRequest(CreateIssueParam createIssueParam) {
+    protected void createRequestByPullRequest(CreateIssueParam createIssueParam) {
         int number = createIssueParam.getPullRequestModel().getNumber();
         createIssueParam.getPullRequestModel().setBody(InputHelper.toString(createIssueParam.getIssueInfo().getDescription()));
         createIssueParam.getPullRequestModel().setTitle(createIssueParam.getIssueInfo().getTitle());
@@ -116,7 +116,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
         }, false);
     }
 
-    private void createRequestByIssue(CreateIssueParam createIssueParam) {
+    protected void createRequestByIssue(CreateIssueParam createIssueParam) {
         createIssueParam.getIssueModel().setBody(InputHelper.toString(createIssueParam.getIssueInfo().getDescription()));
         createIssueParam.getIssueModel().setTitle(createIssueParam.getIssueInfo().getTitle());
         int number = createIssueParam.getIssueModel().getNumber();
@@ -146,7 +146,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                 }, false);
     }
 
-    private void createRequest(CreateIssueParam createIssueParam) {
+    protected void createRequest(CreateIssueParam createIssueParam) {
         CreateIssueModel createIssue = new CreateIssueModel();
         createIssue.setBody(InputHelper.toString(createIssueParam.getIssueInfo().getDescription()));
         createIssue.setTitle(createIssueParam.getIssueInfo().getTitle());

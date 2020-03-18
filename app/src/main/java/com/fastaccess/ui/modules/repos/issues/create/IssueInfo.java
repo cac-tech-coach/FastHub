@@ -4,13 +4,17 @@ import androidx.annotation.NonNull;
 
 public class IssueInfo {
     @NonNull
-    private final String title;
+    private String title = "";
     @NonNull
-    private final CharSequence description;
+    private CharSequence description = "";
     @NonNull
-    private final String login;
+    private String login = "";
     @NonNull
-    private final String repo;
+    private String repo = "";
+
+    public IssueInfo() {
+
+    }
 
     public IssueInfo(@NonNull String title, @NonNull CharSequence description, @NonNull String login, @NonNull String repo) {
         this.title = title;

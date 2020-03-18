@@ -11,17 +11,21 @@ import com.fastaccess.data.dao.model.User;
 import java.util.ArrayList;
 
 public class CreateIssueParam {
-    private final IssueInfo issueInfo;
+    private IssueInfo issueInfo;
     @Nullable
-    private final Issue issueModel;
+    private Issue issueModel;
     @Nullable
-    private final PullRequest pullRequestModel;
+    private PullRequest pullRequestModel;
     @Nullable
-    private final ArrayList<LabelModel> labels;
+    private ArrayList<LabelModel> labels;
     @Nullable
-    private final MilestoneModel milestoneModel;
+    private MilestoneModel milestoneModel;
     @Nullable
-    private final ArrayList<User> users;
+    private ArrayList<User> users;
+
+    public CreateIssueParam() {
+
+    }
 
     public CreateIssueParam(IssueInfo issueInfo, @Nullable Issue issueModel, @Nullable PullRequest pullRequestModel, @Nullable ArrayList<LabelModel> labels, @Nullable MilestoneModel milestoneModel, @Nullable ArrayList<User> users) {
         this.issueInfo = issueInfo;
@@ -34,6 +38,10 @@ public class CreateIssueParam {
 
     public IssueInfo getIssueInfo() {
         return issueInfo;
+    }
+
+    public void setIssueInfo(IssueInfo issueInfo) {
+        this.issueInfo = issueInfo;
     }
 
     public Issue getIssueModel() {
