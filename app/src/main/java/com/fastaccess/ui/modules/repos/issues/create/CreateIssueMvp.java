@@ -2,19 +2,13 @@ package com.fastaccess.ui.modules.repos.issues.create;
 
 import android.content.Intent;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.fastaccess.data.dao.LabelModel;
-import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
-import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 import com.fastaccess.ui.modules.repos.extras.milestone.MilestoneMvp;
-
-import java.util.ArrayList;
 
 /**
  * Created by Kosh on 19 Feb 2017, 12:12 PM
@@ -45,9 +39,7 @@ public interface CreateIssueMvp {
 
         void onActivityForResult(int resultCode, int requestCode, Intent intent);
 
-        void onSubmit(IssueInfo issueInfo, @Nullable Issue issueModel, @Nullable PullRequest pullRequestModel,
-                      @Nullable ArrayList<LabelModel> labels, @Nullable MilestoneModel milestoneModel,
-                      @Nullable ArrayList<User> users);
+        void onSubmit(CreateIssueParam createIssueParam);
 
         void onCheckAppVersion();
 

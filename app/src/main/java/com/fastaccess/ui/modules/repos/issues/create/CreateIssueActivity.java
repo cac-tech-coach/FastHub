@@ -350,7 +350,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     }
 
     @OnClick(R.id.submit) public void onClick() {
-        getPresenter().onSubmit(new IssueInfo(InputHelper.toString(title), savedText, login, repoId), issue, pullRequest, labelModels, milestoneModel, users);
+        getPresenter().onSubmit(new CreateIssueParam(new IssueInfo(InputHelper.toString(title), savedText, login, repoId), issue, pullRequest, labelModels, milestoneModel, users));
     }
 
     @OnClick({R.id.addAssignee, R.id.addLabels, R.id.addMilestone}) public void onViewClicked(View view) {
