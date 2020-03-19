@@ -184,6 +184,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:4.2"
     testImplementation "org.mockito:mockito-core:2.11.0"
+    testImplementation "com.google.truth:truth:1.0.1"
 }
 
 apply plugin: 'com.google.gms.google-services'

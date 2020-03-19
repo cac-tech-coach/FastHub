@@ -70,7 +70,10 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         }
         setCurrentPage(page);
         Login login = Login.getUser();
-        if (login == null) return false;// I can't understand how this could possibly be reached lol.
+        if (login == null) {
+            // I can't understand how this could possibly be reached lol.
+            return false;
+        }
         Observable<Pageable<Event>> observable = buildFeedPageableObservable(page, login);
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
