@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -79,6 +80,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
         }
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     protected void createRequestByPullRequest(CreateIssueParam createIssueParam) {
         int number = createIssueParam.getPullRequestModel().getNumber();
         createIssueParam.getPullRequestModel().setBody(InputHelper.toString(createIssueParam.getIssueInfo().getDescription()));
@@ -116,6 +118,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
         }, false);
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     protected void createRequestByIssue(CreateIssueParam createIssueParam) {
         createIssueParam.getIssueModel().setBody(InputHelper.toString(createIssueParam.getIssueInfo().getDescription()));
         createIssueParam.getIssueModel().setTitle(createIssueParam.getIssueInfo().getTitle());
@@ -146,6 +149,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                 }, false);
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     protected void createRequest(CreateIssueParam createIssueParam) {
         CreateIssueModel createIssue = new CreateIssueModel();
         createIssue.setBody(InputHelper.toString(createIssueParam.getIssueInfo().getDescription()));
